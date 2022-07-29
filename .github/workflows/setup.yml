@@ -10,7 +10,7 @@ defaults:
 
 jobs:
   setup:
-    name: Sanity Check
+    name: Setup
     runs-on: ubuntu-latest
     steps:
     - id: triage
