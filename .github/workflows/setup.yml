@@ -1,6 +1,6 @@
 name: Setup
 
-on: [push, pull_request, release, workflow_call, workflow_run, workflow_dispatch]
+on: [push, pull_request, release] # workflow_call, workflow_run, workflow_dispatch
 
 permissions: write-all
 
