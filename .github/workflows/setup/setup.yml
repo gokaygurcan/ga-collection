@@ -1,4 +1,4 @@
-name: Sanity Check
+name: Setup
 
 on:
 
@@ -11,6 +11,40 @@ jobs:
     name: Sanity Check
     runs-on: ubuntu-latest
     steps:
+    - id: triage
+      name: Triage
+      uses: actions/labeler@v4
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        sync-labels: true
+
+    - id: checkout
+      name: Checkout
+      uses: actions/checkout@v2
+
+    - id: setup-node
+      name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+
+    - id: cache-dependencies
+      name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.npm
+          **/node_modules
+          **/.cache
+        key: node-modules-${{ hashFiles('package.json') }}
+
+    - id: install-dependencies
+      name: Install dependencies
+      if: |
+        (steps.cache-dependencies.outputs.cache-hit != 'true')
+      run: |
+        npm install
+
     - id: sanity-check
       name: Sanity check
       env:
